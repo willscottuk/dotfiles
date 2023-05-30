@@ -1,0 +1,151 @@
+# Homebrew initialization
+eval "$({{ .brewbin }}/brew shellenv)"
+
+# PREREQUISITE
+# ------------
+#
+# - install [sheldon](https://github.com/rossmacarthur/sheldon)
+# - install [starship](https://starship.rs/)
+
+eval "$(sheldon source)"
+
+# completion
+# ----------
+autoload -Uz compinit
+compinit
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' '+m:{A-Z}={a-z}' 'm:{a-zA-Z}={A-Za-z} r:|[._-]=* r:|=*' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -1 --color=always $realpath'
+zstyle ':fzf-tab:*' switch-group '<' '>'
+
+# colors
+# ------
+#
+# enables you to use ${fg[color]}, ${bg[color]}, $reset_color, etc
+#  e.g., `echo "${fg[blue]}blue\!${reset_color}"` prints blue "blue"
+autoload -Uz colors
+colors
+
+# prompt
+# ------
+#
+# using [starship](https://starship.rs/)
+eval "$(starship init zsh)"
+
+# key binding
+# -----------
+bindkey -e
+bindkey '^W' kill-region
+function copy-region() {
+  zle copy-region-as-kill
+  REGION_ACTIVE=0
+}
+zle -N copy-region
+bindkey '^[w' copy-region
+
+# zsh options
+# -----------
+setopt auto_pushd
+setopt append_history
+setopt share_history
+setopt auto_menu
+setopt auto_param_slash
+setopt auto_param_keys
+setopt pushd_ignore_dups
+setopt list_packed
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_save_no_dups
+setopt correct
+setopt no_correct_all
+
+# exports
+# -------
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+
+# all non-alphabetric characters are delimiters
+WORDCHARS=''
+
+# load includes files
+ZSH_INCS=$HOME/.zsh/includes
+
+source $ZSH_INCS/lang.zsh
+source $ZSH_INCS/functions.zsh
+source $ZSH_INCS/os_switch.zsh
+
+# # If you come from bash you might have to change your $PATH.
+# # export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# # Path to your oh-my-zsh installation.
+# export ZSH="$HOME/.oh-my-zsh"
+
+# # Set name of the theme to load --- if set to "random", it will
+# # load a random theme each time oh-my-zsh is loaded, in which case,
+# # to know which specific one was loaded, run: echo $RANDOM_THEME
+# # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME="spaceship"
+
+# # Set list of themes to pick from when loading at random
+# # Setting this variable when ZSH_THEME=random will cause zsh to load
+# # a theme from this variable instead of looking in $ZSH/themes/
+# # If set to an empty array, this variable will have no effect.
+# # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# HISTFILE=~/.zsh_history
+# HISTSIZE=10000
+# SAVEHIST=10000
+
+# Uncomment the following line to disable auto-setting terminal title.
+DISABLE_AUTO_TITLE="true"
+
+
+# plugins=(
+# git
+# zsh-autosuggestions
+# )
+
+# source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+export LANG=en_GB.UTF-8
+export LC_ALL=en_GB.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+export EDITOR='nano'
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+alias dep='vendor/bin/dep'
+# export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
+# export PATH="/opt/homebrew/opt/php@8.1/sbin:$PATH"

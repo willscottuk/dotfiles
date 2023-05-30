@@ -1,0 +1,8 @@
+# kill process
+#
+# dependencies:
+#   - fzf
+ps ax -o pid,lstart,command \
+    | fzf --preview 'echo {} | tr -s " " | cut -f 7- -d " "' --preview-window up:1:wrap:border-horizontal \
+    | awk '{print $1}' \
+    | xargs kill

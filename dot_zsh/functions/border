@@ -1,0 +1,62 @@
+# width -> ()
+draw_top() {
+  local width=$1
+  local tl="┌"
+  local tr="┐"
+  local h="─"
+  printf "$tl"; repeat $width; do printf "$h"; done; print "$tr"
+}
+
+# message -> left_padding -> ()
+draw_message() {
+  local message=$1
+  local pad=$2
+  local v="│"
+  printf "$v"; printf "%s" "$message"; repeat $pad; do printf " "; done; print "$v"
+}
+
+# width -> ()
+draw_bottom() {
+  local width=$1
+  local h="─"
+  local bl="└"
+  local br="┘"
+  printf "$bl"; repeat $width; do printf "$h"; done; print "$br"
+}
+
+main_args() {
+  local msg=" $1 "
+  local len=${#msg}
+  draw_top $len
+  draw_message $msg 0
+  draw_bottom $len
+}
+
+main_stdin() {
+  local maxlen=0
+  local -a messages
+  messages=()
+  local line=""
+  while IFS= read -r s; do
+    line=" $s "
+    if [[ $maxlen < ${#line} ]]; then
+      maxlen=${#line}
+    fi
+    messages=($messages $line)
+  done
+  draw_top $maxlen
+  for msg in ${messages[@]}; do
+    draw_message $msg $(($maxlen - ${#msg}))
+  done
+  draw_bottom $maxlen
+}
+
+main() {
+  if [[ -t 0 ]]; then
+    main_args "$@"
+  else
+    main_stdin
+  fi
+}
+
+main "$@"
