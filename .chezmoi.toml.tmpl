@@ -4,5 +4,5 @@
 {{- if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}
     brewbin = "/opt/homebrew/bin"
 {{- else }}
-    brewbin = "/usr/local/bin"
+    brewbin = "/home/linuxbrew/.linuxbrew/bin"
 {{- end }}

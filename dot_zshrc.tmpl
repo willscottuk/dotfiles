@@ -7,7 +7,9 @@ eval "$({{ .brewbin }}/brew shellenv)"
 # - install [sheldon](https://github.com/rossmacarthur/sheldon)
 # - install [starship](https://starship.rs/)
 
-eval "$(sheldon source)"
+# ssh-agent
+# --------
+zstyle :omz:plugins:ssh-agent agent-forwarding yes
 
 # completion
 # ----------
@@ -24,6 +26,8 @@ zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -1 --color=always $realpath'
 zstyle ':fzf-tab:*' switch-group '<' '>'
+
+eval "$(sheldon source)"
 
 # colors
 # ------
