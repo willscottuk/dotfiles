@@ -4,4 +4,3 @@ set linenumbers
 set mouse
 set titlecolor white,lightblack
 set numbercolor lightblack
-include /usr/local/share/nano/*.nanorc
