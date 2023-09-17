@@ -6,6 +6,9 @@
 #   http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
 alias sudo='sudo '
 
+# Always passes ssh keys to the agent
+alias ssh='ssh -A'
+
 _exists() {
   command -v $1 > /dev/null 2>&1
 }
