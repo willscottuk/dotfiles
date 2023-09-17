@@ -75,3 +75,14 @@ if _exists bat; then
   export BAT_THEME='base16'
   alias cat='bat'
 fi
+
+# Output from (c|b)at for clipboard
+if _exists bat; then
+  # Run to list all themes:
+  #   bat --list-themes
+  alias copy='bat -Pp'
+fi
+
+# Laravel development and deployment
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+alias dep='vendor/bin/dep'

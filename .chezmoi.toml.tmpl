@@ -1,7 +1,7 @@
 [diff]
     pager = "delta"
 [data]
-{{- if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}
+{{- if (eq .chezmoi.os "darwin") }}
     brewbin = "/opt/homebrew/bin"
 {{- else }}
     brewbin = "/home/linuxbrew/.linuxbrew/bin"
