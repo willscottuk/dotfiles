@@ -201,17 +201,17 @@ install_zsh() {
 }
 
 install_software() {
-  if [ "$(uname)" != "Darwin" ]; then
+  info "🍻  Installing from Brewfile"
+
+  if ! _exists brew; then
+    error "🚨  Error: Brew is not available"
     return
   fi
 
-  info "🍻  Installing from Brewfile"
-
-  # Homebrew Bundle
-  if _exists brew; then
+  if [ "$(uname)" = "Darwin" ]; then
     brew bundle --file=./setup/Brewfile
   else
-    error "🚨  Error: Brew is not available"
+    brew bundle --file=./setup/Brewfile.linux
   fi
 
   finish
