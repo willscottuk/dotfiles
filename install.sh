@@ -209,12 +209,23 @@ install_software() {
   fi
 
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  CHEZMOI_SOURCE="${HOME}/.local/share/chezmoi"
 
   if [ "$(uname)" = "Darwin" ]; then
-    brew bundle --file="${SCRIPT_DIR}/setup/Brewfile"
+    BREWFILE_NAME="Brewfile"
   else
-    brew bundle --file="${SCRIPT_DIR}/setup/Brewfile.linux"
+    BREWFILE_NAME="Brewfile.linux"
   fi
+
+  BREWFILE="${SCRIPT_DIR}/setup/${BREWFILE_NAME}"
+  [ -f "$BREWFILE" ] || BREWFILE="${CHEZMOI_SOURCE}/setup/${BREWFILE_NAME}"
+
+  if [ ! -f "$BREWFILE" ]; then
+    error "🚨  Brewfile not found — skipping"
+    return
+  fi
+
+  brew bundle --file="$BREWFILE"
 
   finish
 }
@@ -330,9 +341,9 @@ main() {
   install_homebrew "$*"
   install_git "$*"
   install_zsh "$*"
+  install_chezmoi "$*"
   install_software "$*"
   configure_sudo_ssh "$*"
-  install_chezmoi "$*"
   on_finish "$*"
 }
 
