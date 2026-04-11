@@ -1,7 +1,3 @@
-export LANG="en_GB.UTF-8"
-export LANGUAGE="en_GB:en"
-export LC_ALL="en_GB.UTF-8"
-
 # LSCOLORS
 # Online editor: https://geoff.greer.fm/lscolors/
 export LSCOLORS="Gxfxcxdxbxegedabagacab"

@@ -1,6 +1,9 @@
 # switching by os
 case ${OSTYPE} in
   darwin*)
+    export LANG="en_GB.UTF-8"
+    export LANGUAGE="en_GB:en"
+    export LC_ALL="en_GB.UTF-8"
     # export PATH=/Library/TeX/texbin:$PATH
     # coreutils. for more information, `brew info coreutils`
     if [[ -d /usr/local/opt/coreutils ]]; then
