@@ -3,9 +3,9 @@
 # Dotfiles and bootstrap installer
 # Installs homebrew, core dependencies and chezmoi
 
-set -eufo pipefail
+set -euo pipefail
 
-trap on_error SIGTERM
+trap on_error ERR
 
 e='\033'
 RESET="${e}[0m"
@@ -119,9 +119,11 @@ install_homebrew() {
     ## TODO - If Linux, install dependencies: sudo apt-get install build-essential
     ## TODO - 
     bash -c "$(curl -fsSL ${HOMEBREW_INSTALLER_URL})"
-    ## TODO: for mac it's:
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-    ## but for linux it's eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"$
+    if [ "$(uname)" = "Darwin" ]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
   else
     success "⏭️  You already have Homebrew installed. Skipping..."
   fi
@@ -221,8 +223,7 @@ install_omzsh() {
 
     info "💰  Installing oh-my-zsh"
 
-    (yes | sh -c "$(curl -fsSL
-  https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
+    (yes | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
 
   fi
 
@@ -234,7 +235,7 @@ install_omzsh() {
 
 install_chezmoi() {
 
-  if ! _exists zsh; then
+  if ! _exists chezmoi; then
 
     info "🏡  Installing chezmoi"
 
@@ -290,7 +291,7 @@ main() {
   install_git "$*"
   install_zsh "$*"
   install_software "$*"
-  install_npm "$*"
+  install_chezmoi "$*"
   on_finish "$*"
 }
 

@@ -10,7 +10,7 @@ fi
 
 # asdf
 if [ -d $HOME/.asdf ]; then
-    local plugins="$HOME/.asdf/plugins"
+    plugins="$HOME/.asdf/plugins"
     # java
     if [ -d $plugins/java ]; then
         . $plugins/java/set-java-home.zsh

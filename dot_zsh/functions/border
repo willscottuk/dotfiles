@@ -39,10 +39,10 @@ main_stdin() {
   local line=""
   while IFS= read -r s; do
     line=" $s "
-    if [[ $maxlen < ${#line} ]]; then
+    if [[ $maxlen -lt ${#line} ]]; then
       maxlen=${#line}
     fi
-    messages=($messages $line)
+    messages+=("$line")
   done
   draw_top $maxlen
   for msg in ${messages[@]}; do

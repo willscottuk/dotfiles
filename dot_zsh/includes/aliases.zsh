@@ -24,7 +24,7 @@ fi
 alias clr='clear'
 
 # Go to the /home/$USER (~) directory and clears window of your terminal
-alias q="~ && clear"
+alias q="cd ~ && clear"
 
 # Folders Shortcuts
 [ -d ~/Downloads ]            && alias dl='cd ~/Downloads'
@@ -37,7 +37,6 @@ alias -- +x='chmod +x'
 alias x+='chmod +x'
 
 # Open aliases
-alias open='open_command'
 alias o='open'
 alias oo='open .'
 alias term='open -a iterm.app'
@@ -65,7 +64,7 @@ fi
 alias git-root='cd $(git rev-parse --show-toplevel)'
 
 if _exists lsd; then
-  unalias ls
+  unalias ls 2>/dev/null
   alias ls='lsd'
   alias lt='lsd --tree'
 fi
