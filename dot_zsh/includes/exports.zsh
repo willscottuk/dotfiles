@@ -5,3 +5,6 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=00;36:pi=40;33:so=01;35:do=01;35:bd=40
 # Zsh to use the same colors as ls
 # Link: http://superuser.com/a/707567
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$PATH:$HOME/.composer/vendor/bin"

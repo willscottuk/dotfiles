@@ -88,3 +88,9 @@ fi
 # Laravel development and deployment
 alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 alias dep='vendor/bin/dep'
+
+# Deploying
+alias yolo='sail artisan version:patch && git add . && git commit && git fetch && git rebase && git push && dep deploy'
+alias yolo-='git add . && git commit && git fetch && git rebase && git push && dep deploy'
+alias gitpush='git add . && git commit && git fetch && git rebase && git push'
+alias gitcleandev='git branch -d $(git branch --merged=dev | grep -v dev) && git fetch --prune'
