@@ -273,8 +273,8 @@ configure_sudo_ssh() {
     if grep -qF "pam_ssh_agent_auth" "$pam_sudo"; then
       success "⏭️  PAM sudo already configured. Skipping..."
     else
-      # Insert before the first auth line so it's tried first
-      sudo sed -i "0,/^auth/s||${pam_line}\nauth|" "$pam_sudo"
+      # Insert before the first auth or @include line (Ubuntu uses @include common-auth)
+      sudo sed -i "0,/^auth\|^@include/s||${pam_line}\n&|" "$pam_sudo"
       success "PAM sudo configured to use SSH agent."
     fi
   fi
