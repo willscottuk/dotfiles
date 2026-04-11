@@ -234,16 +234,36 @@ install_omzsh() {
 
 
 configure_sudo_ssh() {
-  info "🔑  Configuring sudo to preserve SSH agent..."
+  info "🔑  Configuring sudo authentication via SSH agent..."
 
+  # Preserve SSH_AUTH_SOCK when sudoing
   local sudoers_file="/etc/sudoers.d/ssh-auth-sock"
-
   if [ -f "$sudoers_file" ]; then
     success "⏭️  SSH agent sudo config already exists. Skipping..."
   else
     echo 'Defaults env_keep += "SSH_AUTH_SOCK"' | sudo tee "$sudoers_file" > /dev/null
     sudo chmod 440 "$sudoers_file"
-    success "SSH agent passthrough configured."
+    success "SSH_AUTH_SOCK preserved in sudo environment."
+  fi
+
+  # Linux only: install pam_ssh_agent_auth so sudo authenticates via SSH key
+  if [ "$(uname)" = "Linux" ]; then
+    if dpkg -s libpam-ssh-agent-auth &>/dev/null 2>&1; then
+      success "⏭️  libpam-ssh-agent-auth already installed. Skipping..."
+    else
+      info "    Installing libpam-ssh-agent-auth..."
+      sudo apt-get install -y libpam-ssh-agent-auth
+    fi
+
+    local pam_sudo="/etc/pam.d/sudo"
+    local pam_line="auth sufficient pam_ssh_agent_auth.so file=%h/.ssh/authorized_keys"
+    if grep -qF "pam_ssh_agent_auth" "$pam_sudo"; then
+      success "⏭️  PAM sudo already configured. Skipping..."
+    else
+      # Insert before the first auth line so it's tried first
+      sudo sed -i "0,/^auth/s||${pam_line}\nauth|" "$pam_sudo"
+      success "PAM sudo configured to use SSH agent."
+    fi
   fi
 
   finish
