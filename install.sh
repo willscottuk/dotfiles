@@ -208,10 +208,12 @@ install_software() {
     return
   fi
 
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
   if [ "$(uname)" = "Darwin" ]; then
-    brew bundle --file=./setup/Brewfile
+    brew bundle --file="${SCRIPT_DIR}/setup/Brewfile"
   else
-    brew bundle --file=./setup/Brewfile.linux
+    brew bundle --file="${SCRIPT_DIR}/setup/Brewfile.linux"
   fi
 
   finish
