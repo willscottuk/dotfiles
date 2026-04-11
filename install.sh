@@ -233,6 +233,22 @@ install_omzsh() {
 }
 
 
+configure_sudo_ssh() {
+  info "🔑  Configuring sudo to preserve SSH agent..."
+
+  local sudoers_file="/etc/sudoers.d/ssh-auth-sock"
+
+  if [ -f "$sudoers_file" ]; then
+    success "⏭️  SSH agent sudo config already exists. Skipping..."
+  else
+    echo 'Defaults env_keep += "SSH_AUTH_SOCK"' | sudo tee "$sudoers_file" > /dev/null
+    sudo chmod 440 "$sudoers_file"
+    success "SSH agent passthrough configured."
+  fi
+
+  finish
+}
+
 install_chezmoi() {
 
   if ! _exists chezmoi; then
@@ -293,6 +309,7 @@ main() {
   install_git "$*"
   install_zsh "$*"
   install_software "$*"
+  configure_sudo_ssh "$*"
   install_chezmoi "$*"
   on_finish "$*"
 }
