@@ -246,12 +246,14 @@ install_chezmoi() {
   fi
 
   if [ -d "$HOME/.local/share/chezmoi/.git" ]; then
-    echo "🚸  chezmoi already initialized"
-    echo "    Reinitialize with: 'chezmoi init https://github.com/${GITHUB_REPO}.git'"
+    info "🚸  chezmoi already initialized, applying..."
   else
-    echo "🚀  Initialize dotfiles with:"
-    echo "    chezmoi init https://github.com/${GITHUB_REPO}.git"
+    info "🚀  Initializing chezmoi from ${GITHUB_REPO}..."
+    chezmoi init "https://github.com/${GITHUB_REPO}.git"
   fi
+
+  info "📦  Applying dotfiles..."
+  chezmoi apply
 
 
   finish
